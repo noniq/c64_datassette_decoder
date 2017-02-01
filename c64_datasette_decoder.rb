@@ -76,15 +76,10 @@ end
 # adjusted for recordings with different amplitudes.
 EDGE_THRESHOLD = 2_000
 pulse_widths = DataStream.new do |yielder|
-  falling_edge = false
   pulse_width = 0
-
   samples.each_cons(2) do |a, b|
     pulse_width += 1
-    if falling_edge && b > a
-      falling_edge = false
-    elsif !falling_edge && a - b > EDGE_THRESHOLD && a >= 0 && b <= 0
-      falling_edge = true
+    if a - b > EDGE_THRESHOLD && a >= 0 && b < 0
       yielder << pulse_width
       pulse_width = 0
     end
