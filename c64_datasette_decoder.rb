@@ -41,12 +41,12 @@ class DataStream
 
   def each
     loop do
-      yield @enum.next
-      @position += 1
+      yield self.next
     end
   end
 
   def next
+    @position += 1
     @enum.next
   end
 end
